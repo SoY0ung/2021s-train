@@ -14,7 +14,7 @@
 >
 > 当![](https://latex.codecogs.com/svg.image?a=q*b&plus;r),即 ![](https://latex.codecogs.com/svg.latex?a\div{b}=q\cdots{r}),有
 >
-> ![](https://latex.codecogs.com/svg.latex?gcd(a,b)=gcd(b,r)\Rightarrow{gcd(a,b)=gcd(b,a{\&space;}mod{\&space;}b))
+> ![](https://latex.codecogs.com/svg.image?gcd(a,b)=gcd(b,r)\Rightarrow&space;gcd(a,b)=gcd(b,a\\;mod\\;b))
 
 因此我们得出代码(递归)
 
