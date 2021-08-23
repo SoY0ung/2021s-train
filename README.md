@@ -12,7 +12,9 @@
 >
 > 用公式表达就是：
 >
-> 当![](https://latex.codecogs.com/svg.image?a=q*b&plus;r),即 ![](https://latex.codecogs.com/svg.latex?a\div{b}=q\cdots{r}),![](https://latex.codecogs.com/svg.latex?gcd(a,b)=gcd(b,r)\Rightarrow{gcd(a,b)=gcd(b,a{\ }mod{\ }b)})
+> 当![](https://latex.codecogs.com/svg.image?a=q*b&plus;r),即 ![](https://latex.codecogs.com/svg.latex?a\div{b}=q\cdots{r}),有
+>
+> ![](https://latex.codecogs.com/svg.latex?gcd(a,b)=gcd(b,r)\Rightarrow{gcd(a,b)=gcd(b,a{\&space;}mod{\&space;}b)})
 
 因此我们得出代码(递归)
 
@@ -28,7 +30,9 @@ long long gcd(long long a,long long b){
 这里只选用埃氏筛，思路如下
 
 > 最小的素数是2，那么2的整数倍都不是素数，删去4,6,8…
+>
 > 余下的数里，最小的素数是3，删去6,9,12…
+>
 > 最终未被删去的数就是素数
 >
 > 时间复杂度是![](https://latex.codecogs.com/svg.image?O(NlogNlogN))
