@@ -8,6 +8,39 @@
 在这一节，我不会讲链表的本体实现，而是介绍C++的STL库中的好朋友：vector和list，vector可当作单链表，list可当作双向链表。
 
 我的代码也将用上述模版编写(同样，**只列举部分**)。
+
+#### 2xa 单链表
+
+##### [P1996 约瑟夫问题](https://www.luogu.com.cn/problem/P1996)
+
+这里用到了STL的vector。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+vector<int> vec;
+
+int main(){
+    int n,m;
+    scanf("%d%d",&n,&m);
+    int len=n,now=m;
+    for (int i = 1; i<=n; i++)
+        vec.push_back(i);
+    while (!vec.empty()) {
+        now%=len;
+        if(now==0) now=len;
+        printf("%d ",*(vec.begin()+now-1));
+        len--;
+        vec.erase(vec.begin()+now-1);
+        now+=(m-1);
+    }
+    return 0;
+}
+```
+
+#### 2xb 双链表
+
 ##### [P1160 队列安排](https://www.luogu.com.cn/problem/P1160)
 
 这里用到了STL的list和迭代器。更多见[洛谷博客](https://www.luogu.com.cn/blog/onlynagesha/solution-p1160)
