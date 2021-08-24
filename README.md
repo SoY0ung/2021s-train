@@ -628,6 +628,203 @@ int main(){
 
 #### 1xb 二维数组
 
+##### [P5731 【深基5.习6】蛇形方阵](https://www.luogu.com.cn/problem/P5731)
 
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
 
+int a[10][10];
+int i=1,j=1,flag=1,n,cnt=2;
+
+void heng(){
+    //j only
+    if (flag<=2) {
+        //move right j++
+        j++;
+        while (1) {
+            if (j==n||a[i][j+1]!=0) {
+                a[i][j]=cnt;
+                cnt++;
+                flag++;
+                break;
+            }else{
+                a[i][j]=cnt;
+                cnt++;
+                j++;
+            }
+        }
+        if (flag>4) {
+            flag=1;
+        }
+    }else {
+        //move left j--
+        j--;
+        while (1) {
+            if (j==1||a[i][j-1]!=0) {
+                a[i][j]=cnt;
+                cnt++;
+                flag++;
+                break;
+            }else{
+                a[i][j]=cnt;
+                cnt++;
+                j--;
+            }
+        }
+        if (flag>4) {
+            flag=1;
+        }
+    }
+    
+}
+void shu(){
+    //i only
+    if (flag<=2) {
+        //move down i++
+        i++;
+        while (1) {
+            if (i==n||a[i+1][j]!=0) {
+                a[i][j]=cnt;
+                cnt++;
+                flag++;
+                break;
+            }else{
+                a[i][j]=cnt;
+                cnt++;
+                i++;
+            }
+        }
+        if (flag>4) {
+            flag=1;
+        }
+    }else{
+        //move up i--
+        i--;
+        while (1) {
+            if (i==1||a[i-1][j]!=0) {
+                a[i][j]=cnt;
+                cnt++;
+                flag++;
+                break;
+            }else{
+                a[i][j]=cnt;
+                cnt++;
+                i--;
+            }
+        }
+        if (flag>4) {
+            flag=1;
+        }
+    }
+}
+
+int main(){
+    scanf("%d",&n);
+    int mx=n*n;
+    a[1][1]=1;
+    while (1) {
+        heng();
+        if (cnt>mx)
+            break;
+        shu();
+        if (cnt>mx)
+            break;
+    }
+    for (i=1; i<=n; i++) {
+        for (j=1; j<=n; j++) {
+            printf("%3d",a[i][j]);
+        }
+        putchar('\n');
+    }
+    return 0;
+}
+```
+
+##### [P5732 【深基5.习7】杨辉三角](https://www.luogu.com.cn/problem/P5732)
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+const int MAXN=22;
+int arr[MAXN][MAXN];
+
+int main(){
+    arr[1][1]=1;
+    int n;
+    scanf("%d",&n);
+    for (int i = 2; i<=n; i++) {
+        for (int j = 1; j<=i; j++) {
+            arr[i][j]=arr[i-1][j-1]+arr[i-1][j];
+        }
+    }
+    for (int i = 1; i<=n; i++) {
+        for (int j = 1; j<=i; j++) {
+            printf("%d ",arr[i][j]);
+        }
+        printf("\n");
+    }
+    return 0;
+}
+```
+
+##### [P1789 【Mc生存】插火把](https://www.luogu.com.cn/problem/P1789)
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+bool vis[110][110];
+int n;
+
+void tjudge(int x,int y){
+    vis[x][y]=1;
+    for (int i = 1; i<=5; i++) {
+        int p=i-3;//x -2 -1 0 1 2
+        int num,s;
+        if(abs(p)==2) num=1,s=0;
+        else if(abs(p)==1) num=3,s=-1;
+        else num=5,s=-2;
+        int nowx=x+p,nowy=y+s;
+        for (int j = 0; j<num; j++) {
+            if(nowx>=1&&nowx<=n&&nowy+j>=1&&nowy+j<=n) vis[nowx][nowy+j]=1;
+        }
+    }
+}
+
+void sjudge(int x,int y){
+    vis[x][y]=1;
+    for (int i = 1; i<=5; i++) {
+        int p=i-3;
+        int num=5,s=-2;
+        int nowx=x+p,nowy=y+s;
+        for (int j = 0; j<num; j++) {
+            if(nowx>=1&&nowx<=n&&nowy+j>=1&&nowy+j<=n) vis[nowx][nowy+j]=1;
+        }
+    }
+}
+
+int main(){
+    int m,k;//n*n m--torch k--stone
+    int ans=0;
+    scanf("%d%d%d",&n,&m,&k);
+    int x,y;
+    for (int i = 1; i<=m; i++) {
+        scanf("%d%d",&x,&y);
+        tjudge(x, y);
+    }
+    for (int i = 1; i<=k; i++) {
+        scanf("%d%d",&x,&y);
+        sjudge(x, y);
+    }
+    for (int i = 1; i<=n; i++) {
+        for (int j = 1; j<=n; j++) {
+            if(!vis[i][j]) ans++;
+        }
+    }
+    printf("%d",ans);
+    return 0;
+}
+```
 
