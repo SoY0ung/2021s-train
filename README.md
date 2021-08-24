@@ -14,7 +14,7 @@
 >
 >  当![](https://latex.codecogs.com/svg.image?a=q*b&plus;r),即 ![](https://latex.codecogs.com/svg.latex?a\div{b}=q\cdots{r}),有
 >
->  ![](https://latex.codecogs.com/svg.image?gcd(a,b)=gcd(b,r)\Rightarrow&space;gcd(a,b)=gcd(b,a\;mod\;b))
+>  ![](https://latex.codecogs.com/svg.image?gcd(a,b)=gcd(b,r)\Rightarrow&space;gcd(a,b)=gcd(b,a\\;\textrm{mod}\\;b))
 
 因此我们得出代码(递归)
 
@@ -93,7 +93,7 @@ int main(){
 
 ![](https://latex.codecogs.com/svg.image?\sum_{i=1}^{n}sum_{a_i}\times(n-i)!)
 
-其中![](https://latex.codecogs.com/svg.image?sum_{a_i})表示![](https://latex.codecogs.com/svg.image?a_i)后比它小的数的个数。~~容易看出~~,![](https://latex.codecogs.com/svg.image?sum_{a_i})就是![](https://latex.codecogs.com/svg.image?{a_i})的逆序数
+其中![](https://latex.codecogs.com/svg.image?sum_{a_i})表示![](https://latex.codecogs.com/svg.image?a_i)后比它小的数的个数。~~容易看出~~, ![](https://latex.codecogs.com/svg.image?sum_{a_i}) 就是 ![](https://latex.codecogs.com/svg.image?{a_i}) 的逆序数
 
 因此我们只要维护好**阶乘运算**和**逆序数**就可以啦！
 
@@ -226,4 +226,139 @@ int main(){
     return 0;
 }
 ```
+#### 0xe 同余定理
+
+> **同余定理**：两个整数同时除以一个整数得到的**余数相同**，则两**整数**同余。记作![](https://latex.codecogs.com/svg.image?a\equiv{b}(\textrm{mod}\;m))
+
+直接写出结论(证明略)
+
+![](https://latex.codecogs.com/svg.image?(a+b)\\;\textrm{mod}\\;p=(a\\;\textrm{mod}\\;p+b\\;\textrm{mod}\\;p)\\;\textrm{mod}\\;p)
+
+![](https://latex.codecogs.com/svg.image?(a-b)\\;\textrm{mod}\\;p=(a\\;\textrm{mod}\\;p-b\\;\textrm{mod}\\;p+p)\\;\textrm{mod}\\;p)
+
+![](https://latex.codecogs.com/svg.image?(a\\,\times\\,b)\\;\textrm{mod}\\;p=a\\;\textrm{mod}\\;p\times{b}\\;\textrm{mod}\\;p)
+
+![](https://latex.codecogs.com/svg.image?\textrm{But}\quad(a\\,\div\\,b)\\;\textrm{mod}\\;p\\,\neq\\,a\\;\textrm{mod}\\;p\\,\div\\,b\\;\textrm{mod}\\;p)
+
+因此对一个高精度数取模，我们可以逐位分解求模：
+
+如1234 = ((1 * 10 + 2) * 10 + 3) * 10 + 4，对这个多项式逐项取模即可
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+ 
+int main(){
+    string a;
+    int b;
+    cin >> a >> b;
+    int len = a.length();
+    int ans = 0;
+    for(int i = 0; i < len; i++){
+        ans = (ans * 10 + a[i] - '0') % b;
+    }
+    cout << ans << endl;
+    return 0;
+}
+```
+#### 0xf 高次方求模(快速幂)
+
+在上面我们知道，除法是不满足同余运算的，那如果真遇到了除法取模(如求组合数)的情况，要怎么办呢？
+
+这时候，我们的**费马小定理**就登场啦！(一般而言，我们的 ![](https://latex.codecogs.com/svg.image?p) 都是质数)
+
+对于一个数 ![](https://latex.codecogs.com/svg.image?n) ，它的逆元就是![](https://latex.codecogs.com/svg.image?n^{p-2})，也就是费马小定理的 ![](https://latex.codecogs.com/svg.image?n\\,\times{n^{p-2}}\equiv1\\,(\textrm{mod}\\,p))
+
+一般这个 ![](https://latex.codecogs.com/svg.image?p) 都很大，我们从1次方开始求效率肯定低，因此我们结合二进制，有了**快速幂取模**
+
+> **快速幂取模**：将幂拆解为多个底数的平方次的积，如果指数为偶数，把指数除以2，并让底数的平方次取余，如果指数为奇数，就把多出来的底数记录下来，再执行偶数次的操作。(具体可百度)
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+const long long mod = 1e9 + 7;//规定对该数取模
+ 
+long long fastpow(long long x, long long y) {//快速幂取模
+    x %= mod;
+    long long res = 1;
+    while (y) {
+        if (y & 1)res = res * x % mod;
+        y >>= 1;
+        x = x * x % mod;
+    }
+    return res;
+}
+
+long long inv(long long n) {//逆元就是n^(mod-2)
+    return fastpow(n, mod - 2);
+}
+
+int main(){
+    long long a;
+    cin>>a;
+    cout<<inv(a);
+    return 0;
+}
+```
+
+#### 0xg 三角形面积(海伦公式)
+
+直接上公式
+
+![](https://latex.codecogs.com/svg.image?S=\sqrt{p(p-a)(p-b)(p-c)}{\qquad}(p=\frac{1}2(a+b+c)))
+
+![](https://latex.codecogs.com/svg.image?\Rightarrow{S}=\frac{1}4\sqrt{(a+b+c)(a+b-c)(a+c-b)(b+c-a)})
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    double a,b,c;
+    cin>>a>>b>>c;
+    double S;
+    S=1.0/4*sqrt((a+b+c)*(a+b-c)*(a+c-b)*(b+c-a));//海伦公式
+    cout<<S;
+    return 0;
+}
+```
+
+#### 0xh 三点顺序
+
+即判断三点![](https://latex.codecogs.com/svg.image?P_1,P_2,P_3)是顺时针还是逆时针方向(或共线)
+设![](https://latex.codecogs.com/svg.image?P_1=(x_1,y_1),\\;P_2=(x_2,y_2),\\;P_3=(x_3,y_3) )
+则可得到向量 
+![](https://latex.codecogs.com/svg.image?\boldsymbol{P_1P_2}=(x_2-x_1,y_2-y_1) )
+![](https://latex.codecogs.com/svg.image?\boldsymbol{P_2P_3}=(x_3-x_2,y_3-y_2))
+则当 ![](https://latex.codecogs.com/svg.image?\boldsymbol{P_1P_2})与![](https://latex.codecogs.com/svg.image?\boldsymbol{P_2P_3}) 的叉乘（向量积)在z轴上的分量为
+
+![](https://latex.codecogs.com/svg.image?(x_2-x_1)*(y_3-y_2)-(y_2-y_1)*(x_3-x_2))
+
+由右手定则得：
+
+- 其为正时，![](https://latex.codecogs.com/svg.image?\overline{P_1P_2P_3}) 路径的走向为逆时针
+- 其为负时，![](https://latex.codecogs.com/svg.image?\overline{P_1P_2P_3}) 路径的走向为顺时针 
+- 其为零时，![](https://latex.codecogs.com/svg.image?\overline{P_1P_2P_3})三点在一直线上
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+int main(){
+    double x1,x2,x3,y1,y2,y3;
+    printf("依次输入P1P2P3的横纵坐标\n");
+    scanf("%lf%lf%lf%lf%lf%lf",&x1,&y1,&x2,&y2,&x3,&y3);
+    double flag;
+    flag=(x2-x1)*(y3-y2)-(y2-y1)*(x3-x2);//叉乘在z轴上的分量
+    if(flag>0){
+        printf("P1P2P3方向为逆时针\n");
+    }else if(flag<0){
+        printf("P1P2P3方向为顺时针\n");
+    }else printf("P1P2P3共线\n");
+    return 0;
+}
+```
+
+
 
