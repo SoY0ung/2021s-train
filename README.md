@@ -384,7 +384,7 @@ int main(){
 
 这里基本不做思路分析，直接上代码
 
-##### [**P1047 [NOIP2005 普及组] 校门外的树.cpp**](https://www.luogu.com.cn/problem/P1047)
+##### [**P1047 [NOIP2005 普及组] 校门外的树**](https://www.luogu.com.cn/problem/P1047)
 
 ```cpp
 #include <bits/stdc++.h>
